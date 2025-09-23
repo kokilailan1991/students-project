@@ -13,7 +13,7 @@ import PremiumFeatures from '@/components/premium-features'
 import AnalyticsDashboard from '@/components/analytics-dashboard'
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState('home')
+  const [activeTab, setActiveTab] = useState('projects')
   const [isSidebarOpen, setIsSidebarOpen] = useState(true) // Always open by default
   const [showPaymentModal, setShowPaymentModal] = useState(false)
   const [selectedTier, setSelectedTier] = useState<'pro' | 'premium'>('pro')
