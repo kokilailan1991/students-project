@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { generatePPT } from '@/lib/openai'
-import { supabaseAdmin } from '@/lib/supabase'
+import { supabaseAdmin, isSupabaseConfigured } from '@/lib/supabase'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -17,30 +17,41 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Generate PPT slides using OpenAI
     const slides = await generatePPT({ title, domain, technologies })
 
-    // Update or create project in database
-    const { data, error } = await supabaseAdmin
-      .from('projects')
-      .upsert({
-        id: projectId,
-        user_id: userId,
-        title,
-        domain,
-        technologies,
-        ppt_slides: slides,
-        updated_at: new Date().toISOString()
-      })
-      .select()
-      .single()
+    // Update or create project in database only if Supabase is configured
+    if (isSupabaseConfigured() && supabaseAdmin) {
+      try {
+        const { data, error } = await supabaseAdmin
+          .from('projects')
+          .upsert({
+            id: projectId,
+            user_id: userId,
+            title,
+            domain,
+            technologies,
+            ppt_slides: slides,
+            updated_at: new Date().toISOString()
+          })
+          .select()
+          .single()
 
-    if (error) {
-      console.error('Database error:', error)
-      return res.status(500).json({ error: 'Failed to save project' })
+        if (error) {
+          console.error('Database error:', error)
+          // Continue without database save
+        } else {
+          projectId = data.id
+        }
+      } catch (dbError) {
+        console.error('Database connection error:', dbError)
+        // Continue without database save
+      }
+    } else {
+      console.warn('Supabase not configured, skipping database save')
     }
 
     res.status(200).json({
       success: true,
       slides,
-      projectId: data.id
+      projectId
     })
   } catch (error) {
     console.error('API error:', error)
