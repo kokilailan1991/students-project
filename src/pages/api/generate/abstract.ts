@@ -1,4 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { generateAbstract } from '@/lib/openai'
+import { supabaseAdmin } from '@/lib/supabase'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -12,36 +14,36 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ error: 'Title and userId are required' })
     }
 
-    // Generate professional abstract (demo version)
-    const abstract = generateDemoAbstract({ title, domain, technologies })
+    // Generate abstract using OpenAI
+    const abstract = await generateAbstract({ title, domain, technologies })
 
-    // Generate a unique project ID
-    const projectId = `proj_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+    // Save to database
+    const { data, error } = await supabaseAdmin
+      .from('projects')
+      .insert({
+        user_id: userId,
+        title,
+        domain,
+        technologies,
+        abstract,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      })
+      .select()
+      .single()
+
+    if (error) {
+      console.error('Database error:', error)
+      return res.status(500).json({ error: 'Failed to save project' })
+    }
 
     res.status(200).json({
       success: true,
       abstract,
-      projectId
+      projectId: data.id
     })
   } catch (error) {
     console.error('API error:', error)
     res.status(500).json({ error: 'Failed to generate abstract' })
   }
-}
-
-function generateDemoAbstract({ title, domain, technologies }: {
-  title: string
-  domain?: string
-  technologies?: string
-}): string {
-  const domainText = domain || 'technology'
-  const techText = technologies || 'modern web technologies'
-  
-  return `This project presents a comprehensive solution for "${title}" in the domain of ${domainText}. The system utilizes advanced ${techText} to deliver an efficient and scalable solution that addresses key challenges in the field.
-
-The proposed solution incorporates innovative approaches to problem-solving through cutting-edge algorithms, user-friendly interfaces, and robust system architecture. The project demonstrates significant potential for real-world application and contributes to the advancement of ${domainText} through its novel methodology and implementation strategies.
-
-Key features include intelligent data processing, seamless user experience, and comprehensive system integration. The project aims to provide measurable improvements in efficiency, accuracy, and user satisfaction while maintaining high standards of security and reliability.
-
-Expected outcomes include enhanced system performance, improved user engagement, and valuable insights for future development in the ${domainText} domain. This project represents a significant contribution to the field and demonstrates the practical application of modern technological solutions.`
 }
