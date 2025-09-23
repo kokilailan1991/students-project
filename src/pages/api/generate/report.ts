@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { title, domain, technologies, userId, projectId } = req.body
+    const { title, domain, technologies, userId, projectId: inputProjectId } = req.body
 
     if (!title || !userId) {
       return res.status(400).json({ error: 'Title and userId are required' })
@@ -18,6 +18,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const report = await generateReport({ title, domain, technologies })
 
     // Update or create project in database only if Supabase is configured
+    let projectId = inputProjectId || `proj_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+    
     if (isSupabaseConfigured() && supabaseAdmin) {
       try {
         const { data, error } = await supabaseAdmin

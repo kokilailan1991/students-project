@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { TrendingUp, Mail, Lock, User, Eye, EyeOff } from 'lucide-react'
+import { FileText, Mail, Lock, User, Eye, EyeOff } from 'lucide-react'
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true)
@@ -53,8 +53,8 @@ export default function AuthPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center">
-            <TrendingUp className="h-8 w-8 text-blue-600" />
-            <span className="ml-2 text-2xl font-bold text-gray-900">Smart SIP Planner</span>
+            <FileText className="h-8 w-8 text-blue-600" />
+            <span className="ml-2 text-2xl font-bold text-gray-900">ProjectPAL</span>
           </Link>
         </div>
 
@@ -66,8 +66,8 @@ export default function AuthPage() {
             </CardTitle>
             <CardDescription>
               {isLogin 
-                ? 'Sign in to access your investment dashboard' 
-                : 'Start your investment journey today'
+                ? 'Sign in to access your project dashboard' 
+                : 'Start creating amazing projects today'
               }
             </CardDescription>
           </CardHeader>
@@ -162,7 +162,7 @@ export default function AuthPage() {
             {/* Demo Account */}
             <div className="mt-4 p-3 bg-gray-50 rounded-lg">
               <p className="text-xs text-gray-600 text-center">
-                <strong>Demo Account:</strong> demo@smartsipplanner.com / demo123
+                <strong>Demo Account:</strong> demo@projectpal.com / demo123
               </p>
             </div>
           </CardContent>
@@ -173,12 +173,12 @@ export default function AuthPage() {
           <div className="p-3 bg-white rounded-lg shadow-sm">
             <User className="h-6 w-6 text-blue-600 mx-auto mb-2" />
             <p className="text-sm font-medium">Free Forever</p>
-            <p className="text-xs text-gray-600">1 statement/month</p>
+            <p className="text-xs text-gray-600">1 project/month</p>
           </div>
           <div className="p-3 bg-white rounded-lg shadow-sm">
-            <TrendingUp className="h-6 w-6 text-green-600 mx-auto mb-2" />
+            <FileText className="h-6 w-6 text-green-600 mx-auto mb-2" />
             <p className="text-sm font-medium">Pro Features</p>
-            <p className="text-xs text-gray-600">Unlimited analysis</p>
+            <p className="text-xs text-gray-600">Unlimited projects</p>
           </div>
         </div>
       </div>

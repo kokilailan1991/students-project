@@ -5,15 +5,15 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Smart SIP Planner - AI-Powered Investment Planning',
-  description: 'Upload your bank statement and get personalized SIP investment recommendations. Transform your financial data into actionable investment insights.',
-  keywords: 'SIP, investment, financial planning, bank statement analysis, mutual funds, wealth creation',
-  authors: [{ name: 'Smart SIP Planner' }],
+  title: 'ProjectPAL - AI-Powered Project Content Generation',
+  description: 'Generate professional project abstracts, reports, and presentations with AI. Transform your project ideas into academic-quality content in seconds.',
+  keywords: 'project generation, AI abstracts, academic reports, project presentations, student tools, education technology',
+  authors: [{ name: 'ProjectPAL' }],
   openGraph: {
-    title: 'Smart SIP Planner - AI-Powered Investment Planning',
-    description: 'Upload your bank statement and get personalized SIP investment recommendations.',
+    title: 'ProjectPAL - AI-Powered Project Content Generation',
+    description: 'Generate professional project abstracts, reports, and presentations with AI.',
     type: 'website',
-    locale: 'en_IN',
+    locale: 'en_US',
   },
 }
 

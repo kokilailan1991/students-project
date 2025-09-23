@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       created_at: new Date().toISOString()
     }))
 
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await supabaseAdmin!
       .from('flashcards')
       .insert(flashcardData)
       .select()

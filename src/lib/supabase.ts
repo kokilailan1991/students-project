@@ -1,7 +1,4 @@
 import { createClient } from '@supabase/supabase-js'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
 
 // Check if Supabase environment variables are available
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -19,7 +16,7 @@ export const createClientComponent = () => {
     console.warn('Supabase environment variables not configured')
     return null
   }
-  return createClientComponentClient()
+  return createClient(supabaseUrl, supabaseAnonKey)
 }
 
 // Server component client
@@ -28,7 +25,7 @@ export const createServerClient = () => {
     console.warn('Supabase environment variables not configured')
     return null
   }
-  return createServerComponentClient({ cookies })
+  return createClient(supabaseUrl, supabaseAnonKey)
 }
 
 // Admin client for server-side operations
@@ -54,7 +51,7 @@ export interface Database {
         Row: {
           id: string
           email: string
-          subscription: 'free' | 'pro'
+          subscription: 'free' | 'pro' | 'premium'
           created_at: string
           updated_at: string
           uploads_this_month: number
@@ -63,7 +60,7 @@ export interface Database {
         Insert: {
           id: string
           email: string
-          subscription?: 'free' | 'pro'
+          subscription?: 'free' | 'pro' | 'premium'
           created_at?: string
           updated_at?: string
           uploads_this_month?: number
@@ -72,113 +69,113 @@ export interface Database {
         Update: {
           id?: string
           email?: string
-          subscription?: 'free' | 'pro'
+          subscription?: 'free' | 'pro' | 'premium'
           created_at?: string
           updated_at?: string
           uploads_this_month?: number
           last_upload_date?: string | null
         }
       }
-      bank_statements: {
+      projects: {
         Row: {
           id: string
           user_id: string
-          filename: string
-          upload_date: string
-          parsed_data: any
-          analysis: any
+          title: string
+          domain: string
+          technologies: string[]
+          abstract?: string
+          report?: string
+          ppt_slides?: any
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          title: string
+          domain: string
+          technologies: string[]
+          abstract?: string
+          report?: string
+          ppt_slides?: any
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          title?: string
+          domain?: string
+          technologies?: string[]
+          abstract?: string
+          report?: string
+          ppt_slides?: any
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      flashcards: {
+        Row: {
+          id: string
+          user_id: string
+          project_id: string
+          question: string
+          answer: string
+          category: string
+          difficulty: 'easy' | 'medium' | 'hard'
           created_at: string
         }
         Insert: {
           id?: string
           user_id: string
-          filename: string
-          upload_date: string
-          parsed_data: any
-          analysis: any
+          project_id: string
+          question: string
+          answer: string
+          category: string
+          difficulty: 'easy' | 'medium' | 'hard'
           created_at?: string
         }
         Update: {
           id?: string
           user_id?: string
-          filename?: string
-          upload_date?: string
-          parsed_data?: any
-          analysis?: any
+          project_id?: string
+          question?: string
+          answer?: string
+          category?: string
+          difficulty?: 'easy' | 'medium' | 'hard'
           created_at?: string
         }
       }
-      sip_plans: {
+      payments: {
         Row: {
           id: string
           user_id: string
-          statement_id: string
-          plan_type: 'short_term' | 'medium_term' | 'long_term'
-          monthly_sip: number
-          expected_return_rate: number
-          duration_years: number
-          expected_future_value: number
+          transaction_id: string
+          amount: number
+          currency: string
+          status: 'pending' | 'approved' | 'failed'
           created_at: string
+          updated_at: string
         }
         Insert: {
           id?: string
           user_id: string
-          statement_id: string
-          plan_type: 'short_term' | 'medium_term' | 'long_term'
-          monthly_sip: number
-          expected_return_rate: number
-          duration_years: number
-          expected_future_value: number
+          transaction_id: string
+          amount: number
+          currency: string
+          status?: 'pending' | 'approved' | 'failed'
           created_at?: string
+          updated_at?: string
         }
         Update: {
           id?: string
           user_id?: string
-          statement_id?: string
-          plan_type?: 'short_term' | 'medium_term' | 'long_term'
-          monthly_sip?: number
-          expected_return_rate?: number
-          duration_years?: number
-          expected_future_value?: number
-          created_at?: string
-        }
-      }
-      subscriptions: {
-        Row: {
-          id: string
-          user_id: string
-          plan: 'free' | 'pro'
-          status: 'active' | 'cancelled' | 'expired'
-          payment_provider: 'stripe' | 'razorpay'
-          payment_id: string
-          amount: number
-          currency: string
-          created_at: string
-          expires_at: string | null
-        }
-        Insert: {
-          id?: string
-          user_id: string
-          plan: 'free' | 'pro'
-          status?: 'active' | 'cancelled' | 'expired'
-          payment_provider: 'stripe' | 'razorpay'
-          payment_id: string
-          amount: number
-          currency: string
-          created_at?: string
-          expires_at?: string | null
-        }
-        Update: {
-          id?: string
-          user_id?: string
-          plan?: 'free' | 'pro'
-          status?: 'active' | 'cancelled' | 'expired'
-          payment_provider?: 'stripe' | 'razorpay'
-          payment_id?: string
+          transaction_id?: string
           amount?: number
           currency?: string
+          status?: 'pending' | 'approved' | 'failed'
           created_at?: string
-          expires_at?: string | null
+          updated_at?: string
         }
       }
     }

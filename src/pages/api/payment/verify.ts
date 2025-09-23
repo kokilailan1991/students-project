@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Save payment record
-    const { data: payment, error: paymentError } = await supabaseAdmin
+    const { data: payment, error: paymentError } = await supabaseAdmin!
       .from('payments')
       .insert({
         user_id: userId,
@@ -34,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // For now, auto-approve payments (in production, this would be manual admin approval)
-    const { error: updateError } = await supabaseAdmin
+    const { error: updateError } = await supabaseAdmin!
       .from('payments')
       .update({ 
         status: 'approved',
@@ -48,7 +48,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Update user subscription
-    const { error: userError } = await supabaseAdmin
+    const { error: userError } = await supabaseAdmin!
       .from('users')
       .update({ 
         subscription: tier,

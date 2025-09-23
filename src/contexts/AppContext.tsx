@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { User, PaymentTier } from '../types';
+import { User, PaymentTier, PaymentTierInfo } from '../types';
 
 interface AppContextType {
   user: User | null;
   setUser: (user: User | null) => void;
-  currentTier: PaymentTier;
+  currentTier: PaymentTierInfo;
   isFeatureUnlocked: (feature: string) => boolean;
   unlockPro: (transactionId: string) => void;
   unlockPremium: (transactionId: string) => void;
@@ -12,7 +12,7 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-const PAYMENT_TIERS: Record<string, PaymentTier> = {
+const PAYMENT_TIERS: Record<string, PaymentTierInfo> = {
   free: {
     name: 'free',
     price: 0,
@@ -66,8 +66,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       // Create default pro user for testing
       const defaultUser: User = {
         id: Date.now().toString(),
+        email: 'demo@projectpal.com',
         subscription: 'pro',
-        createdAt: new Date(),
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        uploads_this_month: 0,
       };
       setUser(defaultUser);
       localStorage.setItem('projectpal_user', JSON.stringify(defaultUser));
