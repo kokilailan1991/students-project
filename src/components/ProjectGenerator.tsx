@@ -35,6 +35,8 @@ import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 import { toast } from 'react-hot-toast'
 import AdvancedExport from '@/components/advanced-export'
+import UpgradeToPro from '@/components/UpgradeToPro'
+import { usePaymentStatus } from '@/hooks/usePaymentStatus'
 
 interface ProjectGeneratorProps {
   onUpgrade: (tier: 'pro' | 'premium') => void
@@ -59,6 +61,10 @@ const ProjectGenerator: React.FC<ProjectGeneratorProps> = ({ onUpgrade, userId }
   const [showAdvancedExport, setShowAdvancedExport] = useState(false)
   const [activeStep, setActiveStep] = useState(1)
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([])
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false)
+  
+  // Payment status hook
+  const { paymentStatus, isPro, isPending, isRejected, refreshStatus } = usePaymentStatus(userId)
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
@@ -439,7 +445,7 @@ const ProjectGenerator: React.FC<ProjectGeneratorProps> = ({ onUpgrade, userId }
                     </Badge>
                   </div>
                   <Button 
-                    onClick={() => onUpgrade('pro')}
+                    onClick={() => setShowUpgradeModal(true)}
                     className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-bold h-16 shadow-xl hover:shadow-2xl transition-all duration-300 text-lg rounded-xl group"
                   >
                     <Lock className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
@@ -494,7 +500,7 @@ const ProjectGenerator: React.FC<ProjectGeneratorProps> = ({ onUpgrade, userId }
                     </Badge>
                   </div>
                   <Button 
-                    onClick={() => onUpgrade('pro')}
+                    onClick={() => setShowUpgradeModal(true)}
                     className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold h-16 shadow-xl hover:shadow-2xl transition-all duration-300 text-lg rounded-xl group"
                   >
                     <Lock className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
@@ -632,6 +638,16 @@ const ProjectGenerator: React.FC<ProjectGeneratorProps> = ({ onUpgrade, userId }
           </div>
         )}
       </div>
+      
+      {/* Upgrade Modal */}
+      <AnimatePresence>
+        {showUpgradeModal && (
+          <UpgradeToPro 
+            onClose={() => setShowUpgradeModal(false)}
+            userId={userId}
+          />
+        )}
+      </AnimatePresence>
     </div>
   )
 }
