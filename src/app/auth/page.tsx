@@ -25,8 +25,34 @@ export default function AuthPage() {
     setIsLoading(true)
 
     try {
-      // TODO: Implement Supabase authentication
+      // Check for demo account
+      if (formData.email === 'demo@projectpal.com' && formData.password === 'demo123') {
+        // Store demo user session
+        localStorage.setItem('projectpal_user', JSON.stringify({
+          id: 'demo-user',
+          email: 'demo@projectpal.com',
+          subscription: 'pro',
+          createdAt: new Date().toISOString(),
+        }))
+        
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1000))
+        
+        // Redirect to dashboard
+        router.push('/dashboard')
+        return
+      }
+
+      // TODO: Implement Supabase authentication for real users
       console.log('Auth attempt:', { isLogin, formData })
+      
+      // For now, create a mock user for any email/password
+      localStorage.setItem('projectpal_user', JSON.stringify({
+        id: Date.now().toString(),
+        email: formData.email,
+        subscription: 'free',
+        createdAt: new Date().toISOString(),
+      }))
       
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000))

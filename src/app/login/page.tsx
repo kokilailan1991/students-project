@@ -23,16 +23,27 @@ export default function LoginPage() {
 
     // Simulate login process
     setTimeout(() => {
-      // Store user session
-      localStorage.setItem('projectpal_user', JSON.stringify({
-        id: Date.now().toString(),
-        email: email,
-        subscription: 'pro',
-        createdAt: new Date(),
-      }))
-      
-      toast.success('Login successful! Welcome to ProjectPAL')
-      router.push('/')
+      // Check for demo account
+      if (email === 'demo@projectpal.com' && password === 'demo123') {
+        localStorage.setItem('projectpal_user', JSON.stringify({
+          id: 'demo-user',
+          email: 'demo@projectpal.com',
+          subscription: 'pro',
+          createdAt: new Date().toISOString(),
+        }))
+        toast.success('Demo login successful! Welcome to ProjectPAL')
+        router.push('/dashboard')
+      } else {
+        // Store user session for any other login
+        localStorage.setItem('projectpal_user', JSON.stringify({
+          id: Date.now().toString(),
+          email: email,
+          subscription: 'free',
+          createdAt: new Date().toISOString(),
+        }))
+        toast.success('Login successful! Welcome to ProjectPAL')
+        router.push('/dashboard')
+      }
       setIsLoading(false)
     }, 1500)
   }
