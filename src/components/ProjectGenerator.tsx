@@ -75,6 +75,16 @@ const ProjectGenerator: React.FC<ProjectGeneratorProps> = ({ onUpgrade, userId }
       return
     }
 
+    // Check if user is trying to access paid features
+    if (type === 'report' || type === 'ppt') {
+      toast.error('This feature requires Pro subscription. Please upgrade to continue.', {
+        duration: 4000,
+        icon: '🔒',
+      })
+      onUpgrade('pro')
+      return
+    }
+
     setIsGenerating(true)
     toast.loading(`Generating ${type}...`, { id: 'generating' })
 
@@ -402,6 +412,12 @@ const ProjectGenerator: React.FC<ProjectGeneratorProps> = ({ onUpgrade, userId }
             >
               <Card className="bg-white/95 backdrop-blur-xl border-0 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden group relative">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full -translate-y-16 translate-x-16"></div>
+                <div className="absolute top-4 left-4 z-10">
+                  <div className="flex items-center space-x-2 bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">
+                    <Lock className="h-4 w-4" />
+                    <span>Pro Feature</span>
+                  </div>
+                </div>
                 <CardContent className="p-8 relative">
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center space-x-6">
@@ -433,22 +449,12 @@ const ProjectGenerator: React.FC<ProjectGeneratorProps> = ({ onUpgrade, userId }
                     </Badge>
                   </div>
                   <Button 
-                    onClick={() => generateContent('report')}
-                    disabled={isGenerating}
+                    onClick={() => onUpgrade('pro')}
                     className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-bold h-16 shadow-xl hover:shadow-2xl transition-all duration-300 text-lg rounded-xl group"
                   >
-                    {isGenerating ? (
-                      <>
-                        <Loader2 className="mr-3 h-6 w-6 animate-spin" />
-                        Generating Report...
-                      </>
-                    ) : (
-                      <>
-                        <Play className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
-                        Generate Full Report
-                        <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform" />
-                      </>
-                    )}
+                    <Lock className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
+                    Upgrade to Generate Report
+                    <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </CardContent>
               </Card>
@@ -461,6 +467,12 @@ const ProjectGenerator: React.FC<ProjectGeneratorProps> = ({ onUpgrade, userId }
             >
               <Card className="bg-white/95 backdrop-blur-xl border-0 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden group relative">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full -translate-y-16 translate-x-16"></div>
+                <div className="absolute top-4 left-4 z-10">
+                  <div className="flex items-center space-x-2 bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">
+                    <Lock className="h-4 w-4" />
+                    <span>Pro Feature</span>
+                  </div>
+                </div>
                 <CardContent className="p-8 relative">
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center space-x-6">
@@ -492,22 +504,12 @@ const ProjectGenerator: React.FC<ProjectGeneratorProps> = ({ onUpgrade, userId }
                     </Badge>
                   </div>
                   <Button 
-                    onClick={() => generateContent('ppt')}
-                    disabled={isGenerating}
+                    onClick={() => onUpgrade('pro')}
                     className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold h-16 shadow-xl hover:shadow-2xl transition-all duration-300 text-lg rounded-xl group"
                   >
-                    {isGenerating ? (
-                      <>
-                        <Loader2 className="mr-3 h-6 w-6 animate-spin" />
-                        Generating Slides...
-                      </>
-                    ) : (
-                      <>
-                        <Play className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
-                        Generate PPT Slides
-                        <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform" />
-                      </>
-                    )}
+                    <Lock className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
+                    Upgrade to Generate PPT
+                    <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </CardContent>
               </Card>
