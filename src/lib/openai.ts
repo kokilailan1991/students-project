@@ -38,7 +38,6 @@ Generate only the abstract text (no heading):`
       messages: [{ role: "user", content: prompt }],
       max_tokens: 500,
       temperature: 0.7,
-      timeout: 30000, // 30 second timeout
     })
 
     const generatedContent = completion.choices[0].message.content?.trim()
