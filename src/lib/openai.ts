@@ -16,14 +16,15 @@ export async function generateAbstract(projectData: {
       return `This project presents a comprehensive solution for ${projectData.title} in the domain of ${projectData.domain || 'technology'}. The system utilizes modern technologies including ${projectData.technologies || 'web technologies'} to deliver an efficient and scalable solution. The project addresses key challenges in the field and provides innovative approaches to problem-solving through advanced algorithms and user-friendly interfaces.`
     }
 
-    const prompt = `Generate a professional, academic-quality project abstract for the following project:
+    const prompt = `You are an AI academic project generator for students. Generate a professional, academic-quality project abstract.
 
+Project Details:
 Title: ${projectData.title}
 Domain: ${projectData.domain || 'Technology'}
 Technologies: ${projectData.technologies || 'Modern web technologies'}
 
 The abstract must be:
-- 150-200 words exactly
+- Exactly 150-200 words
 - Written in formal academic language
 - Include clear problem statement, methodology, and expected outcomes
 - Follow standard academic abstract structure
@@ -31,6 +32,11 @@ The abstract must be:
 - Be suitable for university submission and publication
 - Include keywords relevant to the field
 - Demonstrate innovation and contribution to the field
+- Never leave sections blank
+- Use full paragraphs, not bullet points
+- Insert the provided Title, Domain, and Technologies naturally
+- Keep tone academic but student-friendly
+- Be export-ready for PDF/Word/PPT
 
 Structure the abstract with:
 1. Problem statement and motivation
@@ -66,61 +72,33 @@ export async function generateReport(projectData: {
       return `# ${projectData.title}\n\n## Abstract\n\nThis project presents a comprehensive solution for ${projectData.title} in the domain of ${projectData.domain || 'technology'}.\n\n## Introduction\n\n## Literature Review\n\n## Methodology\n\n## Implementation\n\n## Results\n\n## Conclusion\n\n## References`
     }
 
-    const prompt = `Generate a comprehensive, professional project report for the following project:
+    const prompt = `You are an AI academic project generator for students. 
+Always output a complete academic report with detailed content in every section.
 
+Project Details:
 Title: ${projectData.title}
 Domain: ${projectData.domain || 'Technology'}
 Technologies: ${projectData.technologies || 'Modern web technologies'}
 
-Create a detailed academic report with the following structure:
+Sections to include:
+1. Abstract (150–200 words, must summarize problem, methods, and outcomes)
+2. Introduction (≥200 words, background, objectives, significance)
+3. Literature Review (≥300 words, discuss 3–5 prior works, cite academically)
+4. Methodology (≥250 words, explain tools, frameworks, algorithms)
+5. Implementation (≥250 words, describe design, stack, architecture)
+6. Results & Discussion (≥200 words, expected outcomes, evaluation)
+7. Conclusion (≥150 words, key points and future scope)
+8. References (at least 5, APA/IEEE style)
 
-1. **Abstract** (150-200 words)
-   - Problem statement, methodology, key findings, and conclusions
-
-2. **Introduction** (300-400 words)
-   - Background and motivation
-   - Problem statement and research questions
-   - Objectives and scope
-   - Report organization
-
-3. **Literature Review** (400-500 words)
-   - Related work in the domain
-   - Current state of technology
-   - Gaps in existing solutions
-   - Theoretical framework
-
-4. **Methodology** (500-600 words)
-   - System architecture and design
-   - Technology stack justification
-   - Implementation approach
-   - Development methodology
-   - Testing and validation strategy
-
-5. **Implementation** (400-500 words)
-   - Detailed technical implementation
-   - Key features and modules
-   - User interface design
-   - Database design (if applicable)
-   - Integration details
-
-6. **Results and Analysis** (300-400 words)
-   - System performance metrics
-   - User testing results
-   - Comparison with existing solutions
-   - Limitations and challenges
-
-7. **Conclusion and Future Work** (200-300 words)
-   - Summary of achievements
-   - Contributions to the field
-   - Future enhancements
-   - Recommendations
-
-8. **References** (10-15 academic sources)
-   - Recent papers and publications
-   - Technical documentation
-   - Industry reports
-
-Use formal academic writing style, include technical details, and ensure the content is suitable for university submission. Format as markdown with proper headings and subheadings.`
+Rules:
+- Never leave any section blank.
+- Each section must be full paragraphs, not bullet points.
+- Always insert user-provided Title, Domain, and Tools naturally.
+- Keep tone academic but student-friendly.
+- Output must be export-ready for PDF/Word/PPT.
+- Use markdown formatting with proper headings.
+- Include specific technical details relevant to the domain and technologies mentioned.
+- Ensure content is suitable for university submission and academic standards.`
 
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
