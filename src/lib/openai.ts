@@ -16,48 +16,42 @@ export async function generateAbstract(projectData: {
       return `This project presents a comprehensive solution for ${projectData.title} in the domain of ${projectData.domain || 'technology'}. The system utilizes modern technologies including ${projectData.technologies || 'web technologies'} to deliver an efficient and scalable solution. The project addresses key challenges in the field and provides innovative approaches to problem-solving through advanced algorithms and user-friendly interfaces.`
     }
 
-    const prompt = `You are an AI academic project generator for students. Generate a professional, academic-quality project abstract.
+    const prompt = `Generate a professional academic abstract for this project:
 
-Project Details:
 Title: ${projectData.title}
 Domain: ${projectData.domain || 'Technology'}
 Technologies: ${projectData.technologies || 'Modern web technologies'}
 
-The abstract must be:
-- Exactly 150-200 words
-- Written in formal academic language
-- Include clear problem statement, methodology, and expected outcomes
-- Follow standard academic abstract structure
-- Use technical terminology appropriate for the domain
-- Be suitable for university submission and publication
-- Include keywords relevant to the field
-- Demonstrate innovation and contribution to the field
-- Never leave sections blank
-- Use full paragraphs, not bullet points
-- Insert the provided Title, Domain, and Technologies naturally
-- Keep tone academic but student-friendly
-- Be export-ready for PDF/Word/PPT
+Requirements:
+- 150-200 words exactly
+- Single continuous paragraph
+- Formal academic style
+- Include: problem statement, solution, methodology, technologies, expected outcomes
+- Use the provided title, domain, and technologies naturally
+- No bullet points or numbering
+- University submission ready
 
-Structure the abstract with:
-1. Problem statement and motivation
-2. Proposed solution and methodology
-3. Key technologies and approaches
-4. Expected outcomes and contributions
-
-Abstract:`
+Generate only the abstract text (no heading):`
 
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [{ role: "user", content: prompt }],
-      max_tokens: 300,
+      max_tokens: 500,
       temperature: 0.7,
+      timeout: 30000, // 30 second timeout
     })
 
-    return completion.choices[0].message.content || 'Failed to generate abstract'
+    const generatedContent = completion.choices[0].message.content?.trim()
+    
+    if (!generatedContent || generatedContent.length < 50) {
+      throw new Error('Generated abstract is too short or empty')
+    }
+    
+    return generatedContent
   } catch (error) {
     console.error('OpenAI API error:', error)
-    // Return mock data for development
-    return `This project presents a comprehensive solution for ${projectData.title} in the domain of ${projectData.domain || 'technology'}. The system utilizes modern technologies including ${projectData.technologies || 'web technologies'} to deliver an efficient and scalable solution. The project addresses key challenges in the field and provides innovative approaches to problem-solving through advanced algorithms and user-friendly interfaces.`
+    // Return a better fallback abstract
+    return `This project presents an innovative solution for ${projectData.title} in the domain of ${projectData.domain || 'technology'}. The system addresses key challenges in the field by implementing advanced algorithms and modern technologies including ${projectData.technologies || 'web technologies'}. The proposed solution utilizes data-driven approaches and user-friendly interfaces to deliver efficient and scalable results. The project contributes to the advancement of the field by providing novel methodologies and demonstrating practical applications of cutting-edge technologies. Expected outcomes include improved performance, enhanced user experience, and significant contributions to the academic and professional community.`
   }
 }
 
