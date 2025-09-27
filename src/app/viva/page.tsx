@@ -23,6 +23,6 @@ export default function VivaPage() {
   }
 
   return (
-    <VivaTab onUpgrade={handleUpgrade} userId={userId} />
+    <VivaTab onUpgrade={handleUpgrade} />
   )
 }

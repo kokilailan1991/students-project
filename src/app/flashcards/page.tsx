@@ -23,6 +23,6 @@ export default function FlashcardsPage() {
   }
 
   return (
-    <FlashcardsTab onUpgrade={handleUpgrade} userId={userId} />
+    <FlashcardsTab onUpgrade={handleUpgrade} />
   )
 }
