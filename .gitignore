@@ -20,8 +20,10 @@ dist/
 # IDE files
 .vscode/
 .idea/
+.IdeaIC*/
 *.swp
 *.swo
+*.iml
 
 # OS generated files
 .DS_Store
