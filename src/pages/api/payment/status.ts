@@ -25,23 +25,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     let paymentData = payments[user_id]
 
     // Try to get from Supabase if configured
-    try {
-      const { data, error } = await supabase
-        .from('payment_proofs')
-        .select('*')
-        .eq('user_id', user_id)
-        .single()
+    if (supabase) {
+      try {
+        const { data, error } = await supabase
+          .from('payment_proofs')
+          .select('*')
+          .eq('user_id', user_id)
+          .single()
 
-      if (!error && data) {
-        paymentData = {
-          txn_id: data.txn_id,
-          screenshot_path: data.screenshot_path,
-          status: data.status,
-          submitted_at: data.submitted_at,
-          note: data.note
+        if (!error && data) {
+          paymentData = {
+            txn_id: data.txn_id,
+            screenshot_path: data.screenshot_path,
+            status: data.status,
+            submitted_at: data.submitted_at,
+            note: data.note
+          }
         }
+      } catch (dbError) {
+        console.log('Supabase error:', dbError)
       }
-    } catch (dbError) {
+    } else {
       console.log('Supabase not configured, using in-memory storage')
     }
 

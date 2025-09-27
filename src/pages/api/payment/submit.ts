@@ -80,17 +80,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Save to Supabase if configured
-    try {
-      await supabase
-        .from('payment_proofs')
-        .upsert({
-          user_id,
-          txn_id: txn_id || null,
-          screenshot_path,
-          status: 'pending',
-          submitted_at: new Date().toISOString()
-        })
-    } catch (dbError) {
+    if (supabase) {
+      try {
+        await supabase
+          .from('payment_proofs')
+          .upsert({
+            user_id,
+            txn_id: txn_id || null,
+            screenshot_path,
+            status: 'pending',
+            submitted_at: new Date().toISOString()
+          })
+      } catch (dbError) {
+        console.log('Supabase error:', dbError)
+      }
+    } else {
       console.log('Supabase not configured, using in-memory storage')
     }
 

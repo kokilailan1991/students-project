@@ -32,23 +32,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }))
 
     // Try to get from Supabase if configured
-    try {
-      const { data, error } = await supabase
-        .from('payment_proofs')
-        .select('*')
-        .order('submitted_at', { ascending: false })
+    if (supabase) {
+      try {
+        const { data, error } = await supabase
+          .from('payment_proofs')
+          .select('*')
+          .order('submitted_at', { ascending: false })
 
-      if (!error && data) {
-        paymentList = data.map(row => ({
-          user_id: row.user_id,
-          txn_id: row.txn_id,
-          screenshot_path: row.screenshot_path,
-          status: row.status,
-          submitted_at: row.submitted_at,
-          note: row.note
-        }))
+        if (!error && data) {
+          paymentList = data.map(row => ({
+            user_id: row.user_id,
+            txn_id: row.txn_id,
+            screenshot_path: row.screenshot_path,
+            status: row.status,
+            submitted_at: row.submitted_at,
+            note: row.note
+          }))
+        }
+      } catch (dbError) {
+        console.log('Supabase error:', dbError)
       }
-    } catch (dbError) {
+    } else {
       console.log('Supabase not configured, using in-memory storage')
     }
 

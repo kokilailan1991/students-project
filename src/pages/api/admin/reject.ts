@@ -37,16 +37,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Update in Supabase if configured
-    try {
-      await supabase
-        .from('payment_proofs')
-        .update({ 
-          status: 'rejected',
-          note: note || 'Payment verification failed',
-          rejected_at: new Date().toISOString()
-        })
-        .eq('user_id', user_id)
-    } catch (dbError) {
+    if (supabase) {
+      try {
+        await supabase
+          .from('payment_proofs')
+          .update({ 
+            status: 'rejected',
+            note: note || 'Payment verification failed',
+            rejected_at: new Date().toISOString()
+          })
+          .eq('user_id', user_id)
+      } catch (dbError) {
+        console.log('Supabase error:', dbError)
+      }
+    } else {
       console.log('Supabase not configured, using in-memory storage')
     }
 
