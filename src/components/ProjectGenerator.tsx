@@ -64,7 +64,7 @@ const ProjectGenerator: React.FC<ProjectGeneratorProps> = ({ onUpgrade, userId }
     setFormData(prev => ({ ...prev, [field]: value }))
   }
 
-  const generateContent = async (type: 'abstract' | 'report' | 'ppt') => {
+  const generateContent = async (type: 'abstract') => {
     if (!formData.title.trim()) {
       toast.error('Please enter a project title')
       return
@@ -72,16 +72,6 @@ const ProjectGenerator: React.FC<ProjectGeneratorProps> = ({ onUpgrade, userId }
 
     if (!userId) {
       toast.error('User not authenticated')
-      return
-    }
-
-    // Check if user is trying to access paid features
-    if (type === 'report' || type === 'ppt') {
-      toast.error('This feature requires Pro subscription. Please upgrade to continue.', {
-        duration: 4000,
-        icon: '🔒',
-      })
-      onUpgrade('pro')
       return
     }
 
@@ -114,8 +104,8 @@ const ProjectGenerator: React.FC<ProjectGeneratorProps> = ({ onUpgrade, userId }
 
       const newContent: GeneratedContent = {
         type,
-        content: type === 'ppt' ? '' : data[type] || data.abstract || data.report,
-        slides: type === 'ppt' ? data.slides : undefined,
+        content: data[type] || data.abstract || data.report || '',
+        slides: undefined,
         projectId: data.projectId
       }
 
