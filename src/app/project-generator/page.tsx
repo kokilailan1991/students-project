@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import ProjectGenerator from '@/pages/project-generator'
+import ProjectGenerator from '@/components/ProjectGenerator'
 
 export default function ProjectGeneratorPage() {
   // Get user data from localStorage

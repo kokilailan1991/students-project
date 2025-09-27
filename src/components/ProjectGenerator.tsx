@@ -88,15 +88,18 @@ const ProjectGenerator: React.FC<ProjectGeneratorProps> = ({ onUpgrade, userId }
           title: formData.title,
           domain: formData.domain,
           technologies: formData.technologies,
-          userId,
-          projectId: generatedContent?.projectId
+          userId
         }),
       })
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
       const data = await response.json()
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to generate content')
+      if (data.error) {
+        throw new Error(data.error)
       }
 
       const newContent: GeneratedContent = {
