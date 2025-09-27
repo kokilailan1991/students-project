@@ -3,6 +3,7 @@ services:
     name: projectpal
     env: node
     plan: free
+    runtime: node-20
     buildCommand: npm install && npm run build
     startCommand: npm start
     healthCheckPath: /api/health
