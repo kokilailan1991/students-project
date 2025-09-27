@@ -8,6 +8,10 @@ import PaymentModal from '@/components/modals/payment-modal'
 import ProjectGenerator from '@/components/ProjectGenerator'
 import LandingHero from '@/components/landing-hero'
 import PremiumFeatures from '@/components/premium-features'
+import FlashcardsTab from '@/pages/FlashcardsTab'
+import ResumeTab from '@/pages/ResumeTab'
+import VivaTab from '@/pages/VivaTab'
+import AssignmentsTab from '@/pages/AssignmentsTab'
 import AnalyticsDashboard from '@/components/analytics-dashboard'
 
 function App() {
@@ -62,33 +66,13 @@ function App() {
       case 'analytics':
         return <AnalyticsDashboard />
       case 'assignments':
-        return (
-          <div className="container mx-auto px-4 py-8 text-center">
-            <h1 className="text-3xl font-bold mb-4">Assignments</h1>
-            <p className="text-muted-foreground">Assignment tools coming soon...</p>
-          </div>
-        )
+        return <AssignmentsTab onUpgrade={handleUpgrade} />
       case 'flashcards':
-        return (
-          <div className="container mx-auto px-4 py-8 text-center">
-            <h1 className="text-3xl font-bold mb-4">Flashcards</h1>
-            <p className="text-muted-foreground">Flashcard tools coming soon...</p>
-          </div>
-        )
+        return <FlashcardsTab onUpgrade={handleUpgrade} />
       case 'resume':
-        return (
-          <div className="container mx-auto px-4 py-8 text-center">
-            <h1 className="text-3xl font-bold mb-4">Resume & CV</h1>
-            <p className="text-muted-foreground">Resume builder coming soon...</p>
-          </div>
-        )
+        return <ResumeTab onUpgrade={handleUpgrade} />
       case 'viva':
-        return (
-          <div className="container mx-auto px-4 py-8 text-center">
-            <h1 className="text-3xl font-bold mb-4">Viva & Interview</h1>
-            <p className="text-muted-foreground">Interview prep tools coming soon...</p>
-          </div>
-        )
+        return <VivaTab onUpgrade={handleUpgrade} />
       case 'extras':
         return (
           <div className="container mx-auto px-4 py-8 text-center">
