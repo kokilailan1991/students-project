@@ -209,7 +209,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, tier, user
                         Scan with GPay/PhonePe/Paytm
                       </p>
                       <p className="text-xs text-muted-foreground font-mono">
-                        UPI ID: projectpal@paytm
+                        UPI ID: 9962352046@paytm
                       </p>
                     </div>
                     
