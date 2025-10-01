@@ -166,10 +166,13 @@ const UpgradeToPro: React.FC<UpgradeToProProps> = ({ onClose, userId }) => {
               />
             </div>
             <p className="text-gray-700 text-lg font-medium mb-2">
-              Scan the QR and pay ₹199 via GPay/UPI
+              Scan QR code with any UPI app
+            </p>
+            <p className="text-amber-600 text-base font-semibold mb-2">
+              ⚠️ Enter amount manually: ₹199
             </p>
             <p className="text-gray-600 text-sm">
-              After payment, submit proof below. Your payment will be verified manually.
+              After payment, submit transaction ID below for verification.
             </p>
           </div>
 

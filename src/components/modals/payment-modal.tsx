@@ -208,8 +208,11 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, tier, user
                       <p className="text-sm text-muted-foreground mb-2">
                         Scan with GPay/PhonePe/Paytm
                       </p>
-                      <p className="text-xs text-muted-foreground font-mono">
-                        UPI ID: 9962352046@paytm
+                      <p className="text-xs text-muted-foreground font-mono mb-1">
+                        UPI ID: 9962352046@ybl
+                      </p>
+                      <p className="text-xs text-amber-600 font-medium">
+                        Enter amount manually: ₹{currentTier.price}
                       </p>
                     </div>
                     
